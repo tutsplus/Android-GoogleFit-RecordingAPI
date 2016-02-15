@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements
         mListSubscriptionsResultCallback = new ResultCallback<ListSubscriptionsResult>() {
             @Override
             public void onResult(@NonNull ListSubscriptionsResult listSubscriptionsResult) {
-                for (Subscription sc : listSubscriptionsResult.getSubscriptions()) {
-                    DataType dt = sc.getDataType();
-                    Log.e( "RecordingAPI", dt.getName() );
-                    for (Field field : dt.getFields() ) {
+                for (Subscription subscription : listSubscriptionsResult.getSubscriptions()) {
+                    DataType dataType = subscription.getDataType();
+                    Log.e( "RecordingAPI", dataType.getName() );
+                    for (Field field : dataType.getFields() ) {
                         Log.e( "RecordingAPI", field.toString() );
                     }
                 }
@@ -105,14 +105,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void showSubscriptions() {
-        Fitness.RecordingApi.listSubscriptions(mGoogleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
+        Fitness.RecordingApi.listSubscriptions(mGoogleApiClient)
                 .setResultCallback(mListSubscriptionsResultCallback);
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.e("RecordingAPI", "onConnected");
-
         Fitness.RecordingApi.subscribe(mGoogleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
                 .setResultCallback(mSubscribeResultCallback);
     }
